@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'java.publish'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'io.github.lizhangqu:core-publish:1.4.0'
+    }
+}
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}

@@ -7,14 +7,14 @@ retrace
 <dependency>
 	<groupId>io.github.lizhangqu</groupId>
 	<artifactId>retrace</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'io.github.lizhangqu:retrace:1.0.0'
+implementation 'io.github.lizhangqu:retrace:1.0.1'
 ```
 
 ### Sample

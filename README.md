@@ -19,7 +19,7 @@ implementation 'io.github.lizhangqu:retrace:1.0.0'
 
 ### Sample
 
-根据class原始名获取混淆后的class名
+根据原始class名或方法名获取混淆后的class名或方法名
 
 ```
 Retrace retrace = Retrace.createRetrace(mappingFile, true);
@@ -38,7 +38,7 @@ for (MethodMapping methodMapping : methods) {
 }
 ```
 
-根据class混淆名获取原始class名
+根据混淆后的class名或方法名获取原始class名或方法名
 
 ```
 Retrace retrace = Retrace.createRetrace(mappingFile, false);

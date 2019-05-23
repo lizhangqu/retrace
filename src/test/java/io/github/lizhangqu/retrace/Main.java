@@ -4,10 +4,11 @@ import java.io.*;
 import java.util.Collection;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Main main = new Main();
         main.readMappingByOriginalName();
         main.readMappingByObfuscatedName();
+        main.stacktrace();
     }
 
     void readMappingByOriginalName() {
@@ -43,7 +44,7 @@ public class Main {
         }
     }
 
-    void readMappingByObfuscatedName() throws IOException {
+    void readMappingByObfuscatedName() {
         System.out.println("**********************************************************************");
         File file = new File(Main.class.getClassLoader().getResource("mapping.txt").getFile());
         Retrace retrace = Retrace.createRetrace(file, false);
@@ -74,6 +75,31 @@ public class Main {
             System.out.println("range:" + methodMapping.getRange());
             System.out.println(methodMapping.toString());
         }
+    }
 
+    void stacktrace() {
+        System.out.println("**********************************************************************");
+        File file = new File(Main.class.getClassLoader().getResource("mapping.txt").getFile());
+        Retrace retrace = Retrace.createRetrace(file, false);
+        if (retrace == null) {
+            System.out.println("retrace is null");
+            return;
+        }
+
+        String originalStacktrace = retrace.stackTrace(
+                "java.lang.RuntimeException: some text\n" +
+                        "\tat a.a.a.b.av.b(SourceFile:103)\n" +
+                        "\tat b.a.a.e.a(SourceFile:62)\n" +
+                        "\tat b.a.a.d.a(SourceFile:105)\n" +
+                        "Caused by: java.lang.IllegalArgumentException: some text 2\n" +
+                        "\tat b.a.a.c.a(SourceFile:40)\n" +
+                        "\tat some.unknown.method(SourceFile:76)\n" +
+                        "\tat some.unknown.method2(UnknownSource)\n" +
+                        "\tat b.a.a.a.a(UnknownSource)\n" +
+                        "Caused by: java.lang.NullPointerException\n" +
+                        "\tat b.a.a.b.toString(SourceFile:45)\n" +
+                        "\t... 2 more");
+
+        System.out.println(originalStacktrace);
     }
 }

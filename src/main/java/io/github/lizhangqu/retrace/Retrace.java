@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class Retrace {
     private final Map<String, ClassMapping> classes = new HashMap<String, ClassMapping>();
+    StackTraceAnalyzer stackTraceAnalyzer;
 
     /**
      * useOriginalNameAsKey为true的情况下是根据原始类名映射,否则是混淆后的类名
@@ -65,6 +66,7 @@ public class Retrace {
         if (currentClass != null) {
             classes.put(useOriginalNameAsKey ? currentClass.getOriginalName() : currentClass.getObfuscatedName(), currentClass);
         }
+        stackTraceAnalyzer = new StackTraceAnalyzer(classes);
     }
 
     /**
@@ -96,6 +98,27 @@ public class Retrace {
         if (mapping != null) {
             name = mapping.getOriginalName();
             return name;
+        }
+        return null;
+    }
+
+
+    /**
+     * 堆栈还原
+     */
+    public String stackTrace(String obfuscatedStacktrace) {
+        try {
+            BufferedReader reader = new BufferedReader(new StringReader(obfuscatedStacktrace));
+            StringBuilder builder = new StringBuilder();
+            for (; ; ) {
+                String line = reader.readLine();
+                if (line == null) {
+                    return builder.toString();
+                }
+                stackTraceAnalyzer.appendLine(builder, line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }

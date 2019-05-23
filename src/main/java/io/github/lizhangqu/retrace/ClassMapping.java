@@ -9,40 +9,53 @@ import java.util.regex.Pattern;
 
 public class ClassMapping {
 
-	private static Pattern className = Pattern.compile("(?<name>.*)\\s->\\s(?<obf>.*):");
-	private static Pattern methodName = Pattern.compile("\\s+((?<from>\\d+):(?<to>\\d+):)?(?<ret>[^:]+)\\s(?<name>[^:]+)\\((?<args>.*)\\)\\s->\\s(?<obf>[^:]+)");
+    private static Pattern className = Pattern.compile("(?<name>.*)\\s->\\s(?<obf>.*):");
+    private static Pattern methodName = Pattern.compile("\\s+((?<from>\\d+):(?<to>\\d+):)?(?<ret>[^:]+)\\s(?<name>[^:]+)\\((?<args>.*)\\)\\s->\\s(?<obf>[^:]+)");
 
-	private Multimap<String, MethodMapping> methods = MultimapBuilder.hashKeys().arrayListValues().build();
-	private String name;
-	private String obfuscatedName;
+    private Multimap<String, MethodMapping> methods = MultimapBuilder.hashKeys().arrayListValues().build();
+    private String name;
+    private String obfuscatedName;
 
-	public ClassMapping(String line) {
-		Matcher matcher = className.matcher(line);
-		if (!matcher.matches()) {
-			throw new IllegalArgumentException();
-		}
-		name = matcher.group("name");
-		obfuscatedName = matcher.group("obf");
-	}
+    public ClassMapping(String line) {
+        Matcher matcher = className.matcher(line);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException();
+        }
+        name = matcher.group("name");
+        obfuscatedName = matcher.group("obf");
+    }
 
-	public String getObfuscatedName() {
-		return obfuscatedName;
-	}
 
-	public void addLine(String line) {
-		Matcher matcher = methodName.matcher(line);
-		if (!matcher.matches()) {
-			return;
-		}
-		MethodMapping methodMapping = new MethodMapping(matcher);
-		methods.put(methodMapping.getObfuscatedName(), methodMapping);
-	}
+    /**
+     * 读一行
+     */
+    public void addLine(String line, boolean useOrignalNameAsKey) {
+        Matcher matcher = methodName.matcher(line);
+        if (!matcher.matches()) {
+            return;
+        }
+        MethodMapping methodMapping = new MethodMapping(matcher);
+        methods.put(useOrignalNameAsKey ? methodMapping.getOriginalName() : methodMapping.getObfuscatedName(), methodMapping);
+    }
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * 获得原始类名
+     */
+    public String getOriginalName() {
+        return name;
+    }
 
-	public Collection<MethodMapping> getMethods(String obfuscatedName) {
-		return methods.get(obfuscatedName);
-	}
+    /**
+     * 获得混淆类名
+     */
+    public String getObfuscatedName() {
+        return obfuscatedName;
+    }
+
+    /**
+     * 类中方法映射
+     */
+    public Collection<MethodMapping> getMethods(String name) {
+        return methods.get(name);
+    }
 }

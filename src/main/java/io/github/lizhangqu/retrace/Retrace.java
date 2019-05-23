@@ -52,6 +52,9 @@ public class Retrace {
         String line = mappings.readLine();
         ClassMapping currentClass = null;
         while (line != null) {
+            if (line.startsWith("#")) {
+                continue;
+            }
             boolean isNewClass = currentClass == null || !line.startsWith(" ");
             if (isNewClass) {
                 if (currentClass != null) {

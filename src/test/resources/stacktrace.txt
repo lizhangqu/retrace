@@ -1,0 +1,12 @@
+java.lang.RuntimeException: some text
+	at a.a.a.b.av.b(SourceFile:103)
+	at b.a.a.e.a(SourceFile:62)
+	at b.a.a.d.a(SourceFile:105)
+Caused by: java.lang.IllegalArgumentException: some text 2
+	at b.a.a.c.a(SourceFile:40)
+	at some.unknown.method(SourceFile:76)
+	at some.unknown.method2(UnknownSource)
+	at b.a.a.a.a(UnknownSource)
+Caused by: java.lang.NullPointerException
+	at b.a.a.b.toString(SourceFile:45)
+	... 2 more

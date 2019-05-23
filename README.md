@@ -57,6 +57,25 @@ for (MethodMapping methodMapping : methods) {
 }
 ```
 
+堆栈还原
+
+```
+Retrace retrace = Retrace.createRetrace(mappingFile, false);
+String originalStacktrace = retrace.stackTrace(
+        "java.lang.RuntimeException: some text\n" +
+                "\tat a.a.a.b.av.b(SourceFile:103)\n" +
+                "\tat b.a.a.e.a(SourceFile:62)\n" +
+                "\tat b.a.a.d.a(SourceFile:105)\n" +
+                "Caused by: java.lang.IllegalArgumentException: some text 2\n" +
+                "\tat b.a.a.c.a(SourceFile:40)\n" +
+                "\tat some.unknown.method(SourceFile:76)\n" +
+                "\tat some.unknown.method2(UnknownSource)\n" +
+                "\tat b.a.a.a.a(UnknownSource)\n" +
+                "Caused by: java.lang.NullPointerException\n" +
+                "\tat b.a.a.b.toString(SourceFile:45)\n" +
+                "\t... 2 more");
+```
+
 ### Thanks
  
  - [https://github.com/Artyomcool/retrace](https://github.com/Artyomcool/retrace)

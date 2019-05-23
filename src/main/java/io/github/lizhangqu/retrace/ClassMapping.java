@@ -29,7 +29,7 @@ public class ClassMapping {
     /**
      * 读一行
      */
-    public void addLine(String line, boolean useOriginalNameAsKey) {
+    void addLine(String line, boolean useOriginalNameAsKey) {
         Matcher matcher = methodName.matcher(line);
         if (!matcher.matches()) {
             return;

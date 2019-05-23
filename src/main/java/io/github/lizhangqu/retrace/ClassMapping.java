@@ -29,13 +29,13 @@ public class ClassMapping {
     /**
      * 读一行
      */
-    public void addLine(String line, boolean useOrignalNameAsKey) {
+    public void addLine(String line, boolean useOriginalNameAsKey) {
         Matcher matcher = methodName.matcher(line);
         if (!matcher.matches()) {
             return;
         }
         MethodMapping methodMapping = new MethodMapping(matcher);
-        methods.put(useOrignalNameAsKey ? methodMapping.getOriginalName() : methodMapping.getObfuscatedName(), methodMapping);
+        methods.put(useOriginalNameAsKey ? methodMapping.getOriginalName() : methodMapping.getObfuscatedName(), methodMapping);
     }
 
     /**
